@@ -9,14 +9,17 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
-import { unstable_noStore as noStore} from 'next/cache';
+import { unstable_noStore as noStore } from 'next/cache';
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
 
   try {
     noStore();
+    console.log('Fetching revenue data...');
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     const data = await sql<Revenue>`SELECT * FROM revenue`;
+    console.log('Data fetch completed after 3 seconds.')
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -42,8 +45,7 @@ export async function fetchLatestInvoices() {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest invoices.');
-  }
-}
+  }}
 
 export async function fetchCardData() {
     noStore();
